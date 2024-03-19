@@ -2,12 +2,14 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useLogout from './useLogout'
+import {useNavigate} from "react-router-dom";
 
 const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
     const [mode, setMode] = useState('');
     const [people, setPeople] = useState('');
     const logout = useLogout();
+    const navigate = useNavigate();
 
     const tableStyle = {
         border: '1px solid black',

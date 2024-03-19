@@ -11,6 +11,7 @@ const UsersPage = () => {
     const statuses = ['new', 'inProgress', 'done'];
 
     const logout = useLogout();
+    const navigate = useNavigate();
 
 
     const tableStyle = {

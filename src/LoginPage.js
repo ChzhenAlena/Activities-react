@@ -25,7 +25,7 @@ function LoginPage({ onLogin }) {
                 console.log(response);
                 console.log("Successfully Logged in ");
                 console.log(response.data.id);
-                localStorage.setItem('jwtToken', response.data.id);
+                localStorage.setItem('jwtToken', response.data.ID);
                 navigate('/menu'); // используем это вместо history.push
             })
             .catch(err => console.log(err));
