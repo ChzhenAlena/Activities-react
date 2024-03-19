@@ -1,22 +1,18 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
+
 import { useNavigate } from "react-router-dom";
 import useLogout from './useLogout';
+
 
 const UsersPage = () => {
 
     const [activities, setActivities] = useState([]);
-    const [activityId, setActivityId] = useState('');
-    const [loading, setLoading] = useState(false);
-
     const statuses = ['new', 'inProgress', 'done'];
 
-    const [ident, setIdent] = useState(0);
-    const [post, setPost] = useState({ id: '' }); // Define post state and its setter
-    const [post2, setPost2] = useState({ status: '' }); // Define post2 state and its setter
     const logout = useLogout();
 
-    const navigate = useNavigate();
+
     const tableStyle = {
         border: '1px solid #ddd',
         borderCollapse: 'collapse',
@@ -34,6 +30,15 @@ const UsersPage = () => {
         fontWeight: 'bold',
     };
 
+
+
+    const [ID, setID] = useState({
+        ID: '',
+    })
+    const [status, setStatus] = useState({
+        status: '',
+    })
+
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -48,12 +53,11 @@ const UsersPage = () => {
                 console.error('Error fetching data', error);
             }
         };
-
         fetchData();
     }, []);
 
     const handleSelectChange = (event) => {
-        setPost({...post, [event.target.name]: event.target.value})
+        setID({...ID, [event.target.name]: event.target.value})
     }
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -61,15 +65,20 @@ const UsersPage = () => {
         const headers = {
             'Authorization': `${token}`
         };
+
+        console.log('selectedOption')
+
         const url = localStorage.getItem("url") + '/users';
-        axios.post(url, post, { headers: headers })
+        axios.post(url, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
             })
             .catch(err => console.log(err))
     }
     const handleSelectChange2 = (event) => {
-        setPost2({...post2, [event.target.name]: event.target.value});
+
+        setStatus({...status, [event.target.name]: event.target.value});
+
     }
     const handleSubmit2 = (event) => {
         event.preventDefault();
@@ -77,8 +86,15 @@ const UsersPage = () => {
         const headers = {
             'Authorization': `${token}`
         };
-        const path =  localStorage.getItem("url") + '/users/'+ident;
+
+        const path =  localStorage.getItem("url") + '/users/'+ event.currentTarget.id;
         console.log(path);
+        axios.post(path, status, { headers: headers })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(err => console.log(err))
+        console.log('Submitted');
     }
 
     const handleBackButtonClick = () => {
@@ -88,10 +104,10 @@ const UsersPage = () => {
     return (
         <div>
             <h1>Your Activities</h1>
-            {loading && <p>Loading...</p>}
             <form onSubmit={handleSubmit}>
+
                 <label>Select the current activity:
-                    <select id="id" name="id" onChange={handleSelectChange}>
+                    <select id="ID" name="ID" onChange={handleSelectChange}>
                         {activities.map(activity => (
                             <option key={activity.id} value={activity.id}>{activity.name}</option>
                         ))}
@@ -118,7 +134,6 @@ const UsersPage = () => {
                         <td style={cellStyle}>
                             <form id={activity.id} onSubmit={handleSubmit2}>
                                 <select id="status" name="status" onChange={handleSelectChange2}>
-                                    setIdent = {activity.id};
                                     {statuses.map((status, index) => (
                                         <option key={index} value={status}>{status}</option>
                                     ))}
