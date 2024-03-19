@@ -89,6 +89,9 @@ const ActivitiesPage = () => {
             .catch(err => console.log(err))
 
     }
+    const handleBackButtonClick = () => {
+        navigate("/menu"); // Перенаправляем на страницу WelcomePage
+    };
 
     const handleSelectChange2 = (event) => {
         setID({...ID, [event.target.name]: event.target.value});
@@ -191,6 +194,7 @@ const ActivitiesPage = () => {
                     </tbody>
                 </table>
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
+                <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
             </div>
         );
     }
@@ -218,6 +222,7 @@ const ActivitiesPage = () => {
                     ))}
                     </tbody>
                 </table>
+                <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );

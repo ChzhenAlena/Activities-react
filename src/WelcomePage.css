@@ -1,0 +1,56 @@
+/* WelcomePage.css */
+body {
+    display: flex;
+    justify-content: center; /* Центрируем контейнер по горизонтали */
+    align-items: center; /* Центрируем контейнер по вертикали */
+    height: 100vh; /* Обеспечиваем полную высоту видимой области */
+    margin: 0;
+    background-color: #A9A9A9; /* Изменяем цвет фона на светло-серый */
+}
+
+.error {
+    color: red;
+}
+
+.container {
+    width: 50%;
+    padding: 175px;
+    background-color: #D3D3D3; /* Фон контейнера */
+    border-radius: 10px; /* Закругляем углы контейнера */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Добавляем тень контейнеру */
+}
+
+.container button {
+    margin-bottom: 10px;
+}
+
+.container button:last-child {
+    margin-bottom: 0;
+}
+
+.container button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.logout-btn {
+    background-color: #ffc107; /* Изменяем цвет кнопок на желтый */
+    color: white;
+}
+
+.user-page-btn {
+    background-color: #007bff; /* Изменяем цвет кнопок на синий */
+    color: white;
+}
+
+.activities-page-btn {
+    background-color: #28a745; /* Изменяем цвет кнопок на зеленый */
+    color: white;
+}
+
+.container button:hover {
+    filter: brightness(90%); /* Уменьшаем яркость при наведении */
+}
