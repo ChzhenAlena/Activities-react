@@ -1,13 +1,12 @@
 // UsersPage.js
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import {useNavigate} from "react-router-dom";
 import useLogout from './useLogout'
 
 const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
     const [mode, setMode] = useState('');
-    const [loading, setLoading] = useState(false);
+    const [people, setPeople] = useState('');
     const logout = useLogout();
 
     const tableStyle = {
@@ -25,7 +24,9 @@ const ActivitiesPage = () => {
         priority: '',
         status: ''
     })
-    const navigate = useNavigate();
+    const [ID, setID] = useState({
+        id: '',
+    })
 
     useEffect(() => {
         const fetchData = async () => {
@@ -40,6 +41,7 @@ const ActivitiesPage = () => {
                 console.log('get performed')
                 setActivities(response.data.activities);
                 setMode(response.data.mode);
+                setPeople(response.data.people);
             } catch (error) {
                 console.error('Error fetching data', error);
             }
@@ -88,7 +90,45 @@ const ActivitiesPage = () => {
 
     }
 
+    const handleSelectChange2 = (event) => {
+        setID({...ID, [event.target.name]: event.target.value});
+        //
+    }
+    const handleSubmit2 = (event) => {
+        event.preventDefault();
+        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
+        const headers = {
+            'Authorization': `${token}` // Создание заголовка Authorization с токеном
+        };
+        const path =  localStorage.getItem("url") + '/activities/'+ + event.currentTarget.id;
+        console.log(path);
+        console.log(ID);
+        axios.post(path, ID, { headers: headers })
+            .then(function (response) {
+                console.log(response);
+            })
+            .catch(err => console.log(err))
 
+        // Действия по отправке данных формы
+        console.log('Submitted');
+    }
+    const handleDelete = (event) => {
+        event.preventDefault();
+        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
+        const headers = {
+            'Authorization': `${token}` // Создание заголовка Authorization с токеном
+        };
+        const path =  localStorage.getItem("url") + '/activities/'+ event.currentTarget.id;
+        console.log(path);
+                axios.delete(path, { headers: headers })
+                    .then(function (response) {
+                        console.log(response);
+                    })
+                    .catch(err => console.log(err))
+
+                // Действия по отправке данных формы
+                console.log('Submitted');
+    }
 
 
 
@@ -112,7 +152,6 @@ const ActivitiesPage = () => {
                     <button className="login-btn" type="button" onClick={handleSubmit}>Create</button>
                 </form>
                 <h1>Activities</h1>
-                {loading && <p>Loading...</p>}
                 <table style={tableStyle}>
                     <thead>
                     <tr>
@@ -120,6 +159,8 @@ const ActivitiesPage = () => {
                         <th style={cellStyle}>Priority</th>
                         <th style={cellStyle}>Status</th>
                         <th style={cellStyle}>Person</th>
+                        <th style={cellStyle}>Change person</th>
+                        <th style={cellStyle}></th>
                     </tr>
                     </thead>
                     <tbody>
@@ -129,16 +170,25 @@ const ActivitiesPage = () => {
                             <td style={cellStyle}>{activity.priority}</td>
                             <td style={cellStyle}>{activity.status}</td>
                             <td style={cellStyle}>{activity.personName} {activity.personSurname}</td>
+                            <td style={cellStyle}>
+                                <form id={activity.id} onSubmit={handleSubmit2}>
+                                    <select id="ID" name="ID" onChange={handleSelectChange2}>
+                                        {people.map((person, index) => (
+                                            <option key={index} value={person.id}>{person.name}</option>
+                                        ))}
+                                    </select>
+                                    <button type="submit">Submit</button>
+                                </form>
+                            </td>
+                            <td style={cellStyle}>
+                                <form id={activity.id} onSubmit={handleDelete}>
+                                    <button type="submit">Delete</button>
+                                </form>
+                            </td>
                         </tr>
                     ))}
                     </tbody>
                 </table>
-                {/*<ul>
-                    {activities.map(activity => (
-                        <li key={activity.id}>{activity.activityName}, priority: {activity.priority},
-                            status: {activity.status}, person: {activity.personName} {activity.personSurname}</li>
-                    ))}
-                </ul>*/}
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );
@@ -147,7 +197,6 @@ const ActivitiesPage = () => {
         return (
             <div>
                 <h1>Activities</h1>
-                {loading && <p>Loading...</p>}
                 <table style={tableStyle}>
                     <thead>
                     <tr>
@@ -168,70 +217,10 @@ const ActivitiesPage = () => {
                     ))}
                     </tbody>
                 </table>
-                {/*                <ul>
-                    {activities.map(activity => (
-                        <li key={activity.id}>{activity.activityName}, priority: {activity.priority},
-                            status: {activity.status}, person: {activity.personName} {activity.personSurname}</li>
-                    ))}
-                </ul>*/}
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );
     }
-
-
-    /*useEffect(() => {
-        fetchActivities();
-    }, []);
-
-    const fetchActivities = async () => {
-        try {
-            setLoading(true);
-            const response = await axios.get('/activities');
-            setActivities(response.data);
-        } catch (error) {
-            console.error('Error fetching activities:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    const handleActivitySubmit = async (e) => {
-        e.preventDefault();
-        try {
-            setLoading(true);
-            await axios.post('/users', { id: activityId });
-            // После успешного добавления можно обновить список активностей
-            fetchActivities();
-        } catch (error) {
-            console.error('Error adding activity:', error);
-        } finally {
-            setLoading(false);
-        }
-    };
-
-    return (
-        <div>
-            <h1>All Activities</h1>
-            {loading && <p>Loading...</p>}
-            <ul>
-                {activities.map(activity => (
-                    <li key={activity.id}>{activity.name}</li>
-                ))}
-            </ul>
-            <form onSubmit={handleActivitySubmit}>
-                <label>
-                    Activity ID:
-                    <input
-                        type="text"
-                        value={activityId}
-                        onChange={(e) => setActivityId(e.target.value)}
-                    />
-                </label>
-                <button type="submit">Add Activity</button>
-            </form>
-        </div>
-    );*/
 };
 
 export default ActivitiesPage;

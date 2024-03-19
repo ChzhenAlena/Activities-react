@@ -1,22 +1,15 @@
 // UsersPage.js
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
-import { useNavigate } from "react-router-dom";
 import useLogout from './useLogout'
 
 const UsersPage = () => {
 
     const [activities, setActivities] = useState([]);
-    const [activityId, setActivityId] = useState('');
-    const [loading, setLoading] = useState(false);
-
     const statuses = ['new', 'inProgress', 'done'];
-
-    const [ident, setIdent] = useState(0);
     const logout = useLogout();
 
 
-    const navigate = useNavigate();
     const tableStyle = {
         border: '1px solid black',
         borderCollapse: 'collapse',
@@ -26,11 +19,10 @@ const UsersPage = () => {
         padding: '8px',
     };
 
-    const [post, setPost] = useState({
+    const [id, setId] = useState({
         id: '',
     })
-    const [post2, setPost2] = useState({
-        //id: '',
+    const [status, setStatus] = useState({
         status: '',
     })
     useEffect(() => {
@@ -49,12 +41,11 @@ const UsersPage = () => {
                 console.error('Error fetching data', error);
             }
         };
-
         fetchData();
     }, []);
 
     const handleSelectChange = (event) => {
-        setPost({...post, [event.target.name]: event.target.value})
+        setId({...id, [event.target.name]: event.target.value})
     }
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -63,9 +54,9 @@ const UsersPage = () => {
             'Authorization': `${token}` // Создание заголовка Authorization с токеном
         };
         console.log('selectedOption')
-        console.log(post)
+
         const url = localStorage.getItem("url") + '/users';
-        axios.post(url, post, { headers: headers })
+        axios.post(url, id, { headers: headers })
             .then(function (response) {
                 console.log(response);
             })
@@ -75,8 +66,7 @@ const UsersPage = () => {
         console.log('Submitted');
     }
     const handleSelectChange2 = (event) => {
-        setPost2({...post2, [event.target.name]: event.target.value});
-        //
+        setStatus({...status, [event.target.name]: event.target.value});
     }
     const handleSubmit2 = (event) => {
         event.preventDefault();
@@ -84,25 +74,19 @@ const UsersPage = () => {
         const headers = {
             'Authorization': `${token}` // Создание заголовка Authorization с токеном
         };
-        console.log(event.currentTarget.id)
-        //console.log(post2);
-        //console.log(ident)
-        const path =  localStorage.getItem("url") + '/users/'+ident;
+        const path =  localStorage.getItem("url") + '/users/'+ event.currentTarget.id;
         console.log(path);
-        /*axios.post('http://192.168.100.41:8085/activities/users', post2, { headers: headers })
+        axios.post(path, status, { headers: headers })
             .then(function (response) {
                 console.log(response);
             })
             .catch(err => console.log(err))
-
-        // Действия по отправке данных формы
-        console.log('Submitted');*/
+        console.log('Submitted');
     }
 
     return (
         <div>
             <h1>Your Activities</h1>
-            {loading && <p>Loading...</p>}
             <form onSubmit={handleSubmit}>
                 <label>Выберите текущую активность:
                     <select id="id" name="id" onChange={handleSelectChange}>
@@ -129,9 +113,9 @@ const UsersPage = () => {
                         <td style={cellStyle}>{activity.name}</td>
                         <td style={cellStyle}>{activity.priority}</td>
                         <td style={cellStyle}>{activity.status}</td>
-                        <td style={cellStyle}><form id={activity.id} onSubmit={handleSubmit2}>
+                        <td style={cellStyle}>
+                            <form id={activity.id} onSubmit={handleSubmit2}>
                                 <select id="status" name="status" onChange={handleSelectChange2}>
-                                    setIdent = {activity.id};
                                     {statuses.map((status, index) => (
                                         <option key={index} value={status}>{status}</option>
                                     ))}
@@ -142,11 +126,6 @@ const UsersPage = () => {
                 ))}
                 </tbody>
             </table>
-            {/*            <ul>
-                {activities.map(activity => (
-                    <li key={activity.id}>{activity.name}, priority: {activity.priority}, status: {activity.status}</li>
-                ))}
-            </ul>*/}
             <br/>
             <button className="logout-btn" type="button" onClick={logout}>Logout</button>
         </div>
