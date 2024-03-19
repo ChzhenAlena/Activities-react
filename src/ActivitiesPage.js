@@ -2,11 +2,13 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import {useNavigate} from "react-router-dom";
+import useLogout from './useLogout'
 
 const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
     const [mode, setMode] = useState('');
     const [loading, setLoading] = useState(false);
+    const logout = useLogout();
 
     const tableStyle = {
         border: '1px solid black',
@@ -45,25 +47,6 @@ const ActivitiesPage = () => {
 
         fetchData();
     }, []);
-
-    function handleLogout(event) {
-        event.preventDefault()
-        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
-        const headers = {
-            'Authorization': `${token}` // Создание заголовка Authorization с токеном
-        };
-        const url = localStorage.getItem("url") + '/logout';
-        axios.get(url, { headers: headers })
-            .then(function (response) {
-                console.log(response);
-                console.log("Successfully Logged out ");
-                //localStorage.setItem('jwtToken', '');
-                localStorage.clear();
-                navigate('/'); //use this  instead of history.push
-            })
-            .catch(err => console.log(err))
-
-    }
 
 
     const handleSelectChange = (event) => {
@@ -156,7 +139,7 @@ const ActivitiesPage = () => {
                             status: {activity.status}, person: {activity.personName} {activity.personSurname}</li>
                     ))}
                 </ul>*/}
-                <button className="logout-btn" type="button" onClick={handleLogout}>Logout</button>
+                <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );
     }
@@ -191,7 +174,7 @@ const ActivitiesPage = () => {
                             status: {activity.status}, person: {activity.personName} {activity.personSurname}</li>
                     ))}
                 </ul>*/}
-                <button className="logout-btn" type="button" onClick={handleLogout}>Logout</button>
+                <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );
     }

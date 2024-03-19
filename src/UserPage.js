@@ -2,6 +2,7 @@
 import React, {useState, useEffect, useCallback} from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
+import useLogout from './useLogout'
 
 const UsersPage = () => {
 
@@ -12,6 +13,7 @@ const UsersPage = () => {
     const statuses = ['new', 'inProgress', 'done'];
 
     const [ident, setIdent] = useState(0);
+    const logout = useLogout();
 
 
     const navigate = useNavigate();
@@ -51,24 +53,6 @@ const UsersPage = () => {
         fetchData();
     }, []);
 
-    function handleLogout(event) {
-        event.preventDefault()
-        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
-        const headers = {
-            'Authorization': `${token}` // Создание заголовка Authorization с токеном
-        };
-        const url = localStorage.getItem("url") + '/logout';
-        axios.get(url, { headers: headers })
-            .then(function (response) {
-                console.log(response);
-                console.log("Successfully Logged out ");
-                //localStorage.setItem('jwtToken', '');
-                localStorage.clear();
-                navigate('/'); //use this  instead of history.push
-            })
-            .catch(err => console.log(err))
-
-    }
     const handleSelectChange = (event) => {
         setPost({...post, [event.target.name]: event.target.value})
     }
@@ -100,10 +84,10 @@ const UsersPage = () => {
         const headers = {
             'Authorization': `${token}` // Создание заголовка Authorization с токеном
         };
-        console.log('selectedOption')
-        console.log(post2);
-        console.log(ident)
-        const path =  localStorage.getItem("url") + '/users'+ident;
+        console.log(event.currentTarget.id)
+        //console.log(post2);
+        //console.log(ident)
+        const path =  localStorage.getItem("url") + '/users/'+ident;
         console.log(path);
         /*axios.post('http://192.168.100.41:8085/activities/users', post2, { headers: headers })
             .then(function (response) {
@@ -145,7 +129,7 @@ const UsersPage = () => {
                         <td style={cellStyle}>{activity.name}</td>
                         <td style={cellStyle}>{activity.priority}</td>
                         <td style={cellStyle}>{activity.status}</td>
-                        <td style={cellStyle}><form onSubmit={handleSubmit2}>
+                        <td style={cellStyle}><form id={activity.id} onSubmit={handleSubmit2}>
                                 <select id="status" name="status" onChange={handleSelectChange2}>
                                     setIdent = {activity.id};
                                     {statuses.map((status, index) => (
@@ -164,7 +148,7 @@ const UsersPage = () => {
                 ))}
             </ul>*/}
             <br/>
-            <button className="logout-btn" type="button" onClick={handleLogout}>Logout</button>
+            <button className="logout-btn" type="button" onClick={logout}>Logout</button>
         </div>
     );
 };
