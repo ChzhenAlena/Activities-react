@@ -1,0 +1,69 @@
+/* LoginPage.css */
+body {
+    display: flex;
+    justify-content: center; /* Центрируем контейнер по горизонтали */
+    align-items: center; /* Центрируем контейнер по вертикали */
+    height: 100vh; /* Обеспечиваем полную высоту видимой области */
+    margin: 0;
+    background-color: #A9A9A9; /* Изменяем цвет фона на светло-серый */
+}
+
+.error {
+    color: red;
+}
+
+.container {
+    width: 50%;
+    padding: 175px;
+    background-color: #D3D3D3; /* Фон контейнера */
+    border-radius: 10px; /* Закругляем углы контейнера */
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); /* Добавляем тень контейнеру */
+}
+
+.container form div {
+    margin-bottom: 10px;
+}
+
+.container form label {
+    display: flex;
+    align-items: center;
+}
+
+.container form input {
+    margin-left: 0;
+    width: 70%;
+    padding: 9px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+input:focus {
+    outline: none;
+    border-color: #007bff;
+}
+
+i {
+    position: absolute;
+    top: 50%;
+    right: 10px;
+    transform: translateY(-50%);
+    color: #aaa;
+}
+
+.login-btn {
+    background-color: #ffc107; /* Изменяем цвет кнопок на желтый */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.login-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.login-btn:hover {
+    background-color: #ffca28; /* Изменяем цвет кнопок на желтый при наведении */
+}
