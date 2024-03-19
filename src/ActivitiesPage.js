@@ -87,6 +87,9 @@ const ActivitiesPage = () => {
             .catch(err => console.log(err))
 
     }
+    const handleBackButtonClick = () => {
+        navigate("/menu"); // Перенаправляем на страницу WelcomePage
+    };
 
 
 
@@ -140,6 +143,7 @@ const ActivitiesPage = () => {
                     ))}
                 </ul>*/}
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
+                <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
             </div>
         );
     }
@@ -174,6 +178,8 @@ const ActivitiesPage = () => {
                             status: {activity.status}, person: {activity.personName} {activity.personSurname}</li>
                     ))}
                 </ul>*/}
+
+                <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );

@@ -82,7 +82,7 @@ const UsersPage = () => {
             <h1>Your Activities</h1>
             {loading && <p>Loading...</p>}
             <form onSubmit={handleSubmit}>
-                <label>Выберите текущую активность:
+                <label>Select the current activity:
                     <select id="id" name="id" onChange={handleSelectChange}>
                         {activities.map(activity => (
                             <option key={activity.id} value={activity.id}>{activity.name}</option>
