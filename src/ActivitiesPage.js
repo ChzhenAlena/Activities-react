@@ -19,8 +19,6 @@ const ActivitiesPage = () => {
         border: '1px solid black',
         padding: '8px',
     };
-
-    //const [id, setId] = useState('');
     const [post, setPost] = useState({
         name: '',
         priority: '',
@@ -52,24 +50,6 @@ const ActivitiesPage = () => {
         fetchData();
     }, []);
 
-
-    const handleSelectChange = (event) => {
-        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
-        const headers = {
-            'Authorization': `${token}` // Создание заголовка Authorization с токеном
-        };
-        setPost({...post, [event.target.name]: event.target.value})
-        console.log(post)
-        const url = localStorage.getItem("url") + '/users';
-        axios.post(url, post, { headers: headers })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(err => console.log(err))
-    }
-
-
-
     const handleInput = (event) => {
         setPost({...post, [event.target.name]: event.target.value})
     };
@@ -97,7 +77,6 @@ const ActivitiesPage = () => {
 
     const handleSelectChange2 = (event) => {
         setID({...ID, [event.target.name]: event.target.value});
-        //
     }
     const handleSubmit2 = (event) => {
         event.preventDefault();
@@ -135,8 +114,6 @@ const ActivitiesPage = () => {
                 // Действия по отправке данных формы
                 console.log('Submitted');
     }
-
-
 
     if(mode==='admin') {
         return (
