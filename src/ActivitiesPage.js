@@ -25,7 +25,7 @@ const ActivitiesPage = () => {
         status: ''
     })
     const [ID, setID] = useState({
-        id: '',
+        ID: '',
     })
 
     useEffect(() => {
@@ -118,6 +118,7 @@ const ActivitiesPage = () => {
         const headers = {
             'Authorization': `${token}` // Создание заголовка Authorization с токеном
         };
+        console.log(event.currentTarget)
         const path =  localStorage.getItem("url") + '/activities/'+ event.currentTarget.id;
         console.log(path);
                 axios.delete(path, { headers: headers })
@@ -172,7 +173,7 @@ const ActivitiesPage = () => {
                             <td style={cellStyle}>{activity.personName} {activity.personSurname}</td>
                             <td style={cellStyle}>
                                 <form id={activity.id} onSubmit={handleSubmit2}>
-                                    <select id="ID" name="ID" onChange={handleSelectChange2}>
+                                    <select name="ID" onChange={handleSelectChange2}>
                                         {people.map((person, index) => (
                                             <option key={index} value={person.id}>{person.name}</option>
                                         ))}
@@ -181,7 +182,7 @@ const ActivitiesPage = () => {
                                 </form>
                             </td>
                             <td style={cellStyle}>
-                                <form id={activity.id} onSubmit={handleDelete}>
+                                <form id = {activity.id} onSubmit={handleDelete}>
                                     <button type="submit">Delete</button>
                                 </form>
                             </td>

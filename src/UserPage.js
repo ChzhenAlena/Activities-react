@@ -19,8 +19,8 @@ const UsersPage = () => {
         padding: '8px',
     };
 
-    const [id, setId] = useState({
-        id: '',
+    const [ID, setID] = useState({
+        ID: '',
     })
     const [status, setStatus] = useState({
         status: '',
@@ -45,7 +45,7 @@ const UsersPage = () => {
     }, []);
 
     const handleSelectChange = (event) => {
-        setId({...id, [event.target.name]: event.target.value})
+        setID({...ID, [event.target.name]: event.target.value})
     }
     const handleSubmit = (event) => {
         event.preventDefault();
@@ -56,7 +56,7 @@ const UsersPage = () => {
         console.log('selectedOption')
 
         const url = localStorage.getItem("url") + '/users';
-        axios.post(url, id, { headers: headers })
+        axios.post(url, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
             })
@@ -89,7 +89,7 @@ const UsersPage = () => {
             <h1>Your Activities</h1>
             <form onSubmit={handleSubmit}>
                 <label>Выберите текущую активность:
-                    <select id="id" name="id" onChange={handleSelectChange}>
+                    <select id="ID" name="ID" onChange={handleSelectChange}>
                         {activities.map(activity => (
                             <option key={activity.id} value={activity.id}>{activity.name}</option>
                         ))}

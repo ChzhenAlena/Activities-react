@@ -3,7 +3,8 @@ import {useNavigate} from "react-router-dom";
 
 const useLogout = () => {
     const navigate = useNavigate();
-    const logout = () => {
+    const logout = (event) => {
+        event.preventDefault();
 //        event.preventDefault();
         const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
         const headers = {
