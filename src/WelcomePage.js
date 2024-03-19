@@ -2,7 +2,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import axios from "axios";
-import useLogout from './useLogout'
+import useLogout from './useLogout';
+import { FaUser } from "react-icons/fa"; // Импортируем иконку пользователя
+import "./WelcomePage.css"; // импортируем файл стилей для WelcomePage
 
 function WelcomePage({ username, onLogout }) {
     const navigate = useNavigate();
@@ -16,13 +18,11 @@ function WelcomePage({ username, onLogout }) {
     };
     return (
         <div className="container">
-            {/*<p>You are successfully logged in, {username}!</p>*/}
-            <p>You are successfully logged in!</p>
+            <h2>You are successfully logged in!</h2>
             <button className="logout-btn" onClick={logout}>Logout</button>
             <button className="user-page-btn" onClick={handleGoToUserPage}>Go to your activities</button>
             <button className="activities-page-btn" onClick={handleGoToActivitiesPage}>Go to all activities</button>
         </div>
     );
-
 }
 export default WelcomePage;
