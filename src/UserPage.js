@@ -18,12 +18,20 @@ const UsersPage = () => {
 
     const navigate = useNavigate();
     const tableStyle = {
-        border: '1px solid black',
+        border: '1px solid #ddd',
         borderCollapse: 'collapse',
+        width: '100%',
     };
     const cellStyle = {
-        border: '1px solid black',
-        padding: '8px',
+        border: '1px solid #ddd',
+        padding: '12px',
+        textAlign: 'left',
+    };
+    const headerCellStyle = {
+        ...cellStyle,
+        backgroundColor: '#f2f2f2',
+        color: '#333',
+        fontWeight: 'bold',
     };
 
     useEffect(() => {
@@ -74,7 +82,7 @@ const UsersPage = () => {
     }
 
     const handleBackButtonClick = () => {
-        navigate("/menu"); // Перенаправляем на страницу WelcomePage
+        navigate("/menu"); // Redirect to the WelcomePage
     };
 
     return (
@@ -95,10 +103,10 @@ const UsersPage = () => {
             <table style={tableStyle}>
                 <thead>
                 <tr>
-                    <th style={cellStyle}>Name</th>
-                    <th style={cellStyle}>Priority</th>
-                    <th style={cellStyle}>Status</th>
-                    <th style={cellStyle}>Change status</th>
+                    <th style={headerCellStyle}>Name</th>
+                    <th style={headerCellStyle}>Priority</th>
+                    <th style={headerCellStyle}>Status</th>
+                    <th style={headerCellStyle}>Change status</th>
                 </tr>
                 </thead>
                 <tbody>
