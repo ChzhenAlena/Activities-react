@@ -1,8 +1,7 @@
-// UsersPage.js
-import React, {useState, useEffect, useCallback} from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { useNavigate } from "react-router-dom";
-import useLogout from './useLogout'
+import useLogout from './useLogout';
 
 const UsersPage = () => {
 
@@ -13,8 +12,9 @@ const UsersPage = () => {
     const statuses = ['new', 'inProgress', 'done'];
 
     const [ident, setIdent] = useState(0);
+    const [post, setPost] = useState({ id: '' }); // Define post state and its setter
+    const [post2, setPost2] = useState({ status: '' }); // Define post2 state and its setter
     const logout = useLogout();
-
 
     const navigate = useNavigate();
     const tableStyle = {
@@ -26,24 +26,15 @@ const UsersPage = () => {
         padding: '8px',
     };
 
-    const [post, setPost] = useState({
-        id: '',
-    })
-    const [post2, setPost2] = useState({
-        //id: '',
-        status: '',
-    })
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
+                const token = localStorage.getItem('jwtToken');
                 const headers = {
-                    'Authorization': `${token}` // Создание заголовка Authorization с токеном
+                    'Authorization': `${token}`
                 };
-                console.log(headers);
                 const url = localStorage.getItem("url") + '/users';
                 const response = await axios.get(url, {headers: headers});
-                console.log('get performed')
                 setActivities(response.data);
             } catch (error) {
                 console.error('Error fetching data', error);
@@ -58,46 +49,33 @@ const UsersPage = () => {
     }
     const handleSubmit = (event) => {
         event.preventDefault();
-        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
+        const token = localStorage.getItem('jwtToken');
         const headers = {
-            'Authorization': `${token}` // Создание заголовка Authorization с токеном
+            'Authorization': `${token}`
         };
-        console.log('selectedOption')
-        console.log(post)
         const url = localStorage.getItem("url") + '/users';
         axios.post(url, post, { headers: headers })
             .then(function (response) {
                 console.log(response);
             })
             .catch(err => console.log(err))
-
-        // Действия по отправке данных формы
-        console.log('Submitted');
     }
     const handleSelectChange2 = (event) => {
         setPost2({...post2, [event.target.name]: event.target.value});
-        //
     }
     const handleSubmit2 = (event) => {
         event.preventDefault();
-        const token = localStorage.getItem('jwtToken'); // Получение токена из localStorage
+        const token = localStorage.getItem('jwtToken');
         const headers = {
-            'Authorization': `${token}` // Создание заголовка Authorization с токеном
+            'Authorization': `${token}`
         };
-        console.log(event.currentTarget.id)
-        //console.log(post2);
-        //console.log(ident)
         const path =  localStorage.getItem("url") + '/users/'+ident;
         console.log(path);
-        /*axios.post('http://192.168.100.41:8085/activities/users', post2, { headers: headers })
-            .then(function (response) {
-                console.log(response);
-            })
-            .catch(err => console.log(err))
-
-        // Действия по отправке данных формы
-        console.log('Submitted');*/
     }
+
+    const handleBackButtonClick = () => {
+        navigate("/menu"); // Перенаправляем на страницу WelcomePage
+    };
 
     return (
         <div>
@@ -129,25 +107,23 @@ const UsersPage = () => {
                         <td style={cellStyle}>{activity.name}</td>
                         <td style={cellStyle}>{activity.priority}</td>
                         <td style={cellStyle}>{activity.status}</td>
-                        <td style={cellStyle}><form id={activity.id} onSubmit={handleSubmit2}>
+                        <td style={cellStyle}>
+                            <form id={activity.id} onSubmit={handleSubmit2}>
                                 <select id="status" name="status" onChange={handleSelectChange2}>
                                     setIdent = {activity.id};
                                     {statuses.map((status, index) => (
                                         <option key={index} value={status}>{status}</option>
                                     ))}
                                 </select>
-                            <button type="submit">Submit</button>
-                        </form></td>
+                                <button type="submit">Submit</button>
+                            </form>
+                        </td>
                     </tr>
                 ))}
                 </tbody>
             </table>
-            {/*            <ul>
-                {activities.map(activity => (
-                    <li key={activity.id}>{activity.name}, priority: {activity.priority}, status: {activity.status}</li>
-                ))}
-            </ul>*/}
             <br/>
+            <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
             <button className="logout-btn" type="button" onClick={logout}>Logout</button>
         </div>
     );
