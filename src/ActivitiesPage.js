@@ -199,7 +199,7 @@ const ActivitiesPage = () => {
                     </tbody>
                 </table>
             </div>
-            <button className="logout-btn" type="button" onClick={handleBackButtonClick}>
+            <button className="back-btn" type="button" onClick={handleBackButtonClick}>
                 Back
             </button>
             <button className="logout-btn" type="button" onClick={logout}>

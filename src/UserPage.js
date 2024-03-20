@@ -131,7 +131,7 @@ const UsersPage = () => {
                 </tbody>
             </table>
             <br/>
-            <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
+            <button className="back-btn" type="button" onClick={handleBackButtonClick}>Back</button>
             <button className="logout-btn" type="button" onClick={logout}>Logout</button>
         </div>
     );

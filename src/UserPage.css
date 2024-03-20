@@ -30,8 +30,24 @@
 }
 
 .logout-btn:hover {
-    background-color: #ffc107;
+    background-color: #FF8C00;
 }
+
+.back-btn {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.back-btn:hover {
+    background-color: #008080;
+}
+
 .table-container {
     max-height: 400px; /* Например, высота, которую вы хотите фиксировать */
     overflow-y: auto; /* Разрешаем прокрутку по вертикали */
@@ -64,7 +80,7 @@
 
 .create-activity-form button {
     padding: 8px 20px;
-    background-color: #ffc107;
+    background-color: #28a745;
     color: white;
     border: none;
     border-radius: 4px;
@@ -72,5 +88,5 @@
 }
 
 .create-activity-form button:hover {
-    background-color: #0056b3;
+    background-color: #228B22;
 }
