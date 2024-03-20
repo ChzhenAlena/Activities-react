@@ -131,19 +131,19 @@ const ActivitiesPage = () => {
     return (
         <div>
             {mode === 'admin' && (
-                <form>
+                <form className="create-activity-form">
                     <h2>Create new activity:</h2>
-                    <div>
+                    <div className="form-row">
                         <label>Name:</label>
-                        <input type="text" name="name" onChange={handleInput} />
+                        <input type="text" name="name" onChange={handleInput}/>
                     </div>
-                    <div>
+                    <div className="form-row">
                         <label>Priority:</label>
-                        <input type="text" name="priority" onChange={handleInput} />
+                        <input type="text" name="priority" onChange={handleInput}/>
                     </div>
-                    <div>
+                    <div className="form-row">
                         <label>Status:</label>
-                        <input type="text" name="status" onChange={handleInput} />
+                        <input type="text" name="status" onChange={handleInput}/>
                     </div>
                     <button className="login-btn" type="button" onClick={handleSubmit}>
                         Create

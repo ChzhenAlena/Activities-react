@@ -36,3 +36,41 @@
     max-height: 400px; /* Например, высота, которую вы хотите фиксировать */
     overflow-y: auto; /* Разрешаем прокрутку по вертикали */
 }
+
+.create-activity-form {
+    margin-bottom: 20px;
+}
+
+.create-activity-form h2 {
+    margin-bottom: 10px;
+}
+
+.create-activity-form .form-row {
+    margin-bottom: 10px;
+}
+
+.create-activity-form label {
+    display: block;
+    margin-bottom: 5px;
+}
+
+.create-activity-form input[type="text"] {
+    width: 50%;
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+.create-activity-form button {
+    padding: 8px 20px;
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.create-activity-form button:hover {
+    background-color: #0056b3;
+}
