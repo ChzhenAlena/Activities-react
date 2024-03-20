@@ -2,17 +2,18 @@
     border: 1px solid #ddd;
     border-collapse: collapse;
     width: 100%;
+    background-color: #FFF8DC;
 }
 
 .custom-table th,
 .custom-table td {
-    border: 1px solid #ddd;
+    border: 1px solid #FFF8DC;
     padding: 12px;
     text-align: left;
 }
 
 .custom-table th {
-    background-color: #f2f2f2;
+    background-color: #DAA520;
     color: #333;
     font-weight: bold;
 }

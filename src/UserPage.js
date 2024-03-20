@@ -12,7 +12,7 @@ const UsersPage = () => {
     const navigate = useNavigate();
 
     const [ID, setID] = useState({ ID: '' });
-    const [status, setStatus] = useState({ status: '' });
+    const [statusesByActivity, setStatusesByActivity] = useState({});
 
     useEffect(() => {
         fetchData();
@@ -26,7 +26,14 @@ const UsersPage = () => {
             };
             const url = localStorage.getItem("url") + '/users';
             const response = await axios.get(url, {headers: headers});
-            setActivities(response.data.sort((a, b) => a.id - b.id));
+            const sortedData = response.data.sort((a, b) => a.id - b.id);
+            setActivities(sortedData);
+            // Инициализируем состояние статусов для каждой активности
+            const initialStatuses = {};
+            sortedData.forEach(activity => {
+                initialStatuses[activity.id] = '';
+            });
+            setStatusesByActivity(initialStatuses);
         } catch (error) {
             console.error('Error fetching data', error);
         }
@@ -51,22 +58,24 @@ const UsersPage = () => {
             .catch(err => console.log(err))
     };
 
-    const handleSelectChange2 = (event) => {
-        setStatus({...status, [event.target.name]: event.target.value});
+    const handleSelectChange2 = (event, activityId) => {
+        const updatedStatuses = { ...statusesByActivity };
+        updatedStatuses[activityId] = event.target.value;
+        setStatusesByActivity(updatedStatuses);
     };
 
-    const handleSubmit2 = (event) => {
+    const handleSubmit2 = (event, activityId) => {
         event.preventDefault();
         const token = localStorage.getItem('jwtToken');
         const headers = {
             'Authorization': `${token}`
         };
-        const path =  localStorage.getItem("url") + '/users/'+ event.currentTarget.id;
-        axios.post(path, status, { headers: headers })
+        const path =  localStorage.getItem("url") + '/users/'+ activityId;
+        axios.post(path, { status: statusesByActivity[activityId] }, { headers: headers })
             .then(function (response) {
                 console.log(response);
                 fetchData();
-                setStatus({ status: '' }); // Сбрасываем значение status после успешного изменения статуса
+                // Не нужно сбрасывать значение status
             })
             .catch(err => console.log(err))
     };
@@ -107,8 +116,8 @@ const UsersPage = () => {
                         <td>{activity.priority}</td>
                         <td>{activity.status}</td>
                         <td>
-                            <form id={activity.id} onSubmit={handleSubmit2}>
-                                <select id="status" name="status" onChange={handleSelectChange2} value={status.status}>
+                            <form onSubmit={(event) => handleSubmit2(event, activity.id)}>
+                                <select id="status" name="status" onChange={(event) => handleSelectChange2(event, activity.id)} value={statusesByActivity[activity.id]}>
                                     <option value="" disabled hidden>Choose the status</option>
                                     {statuses.map((status, index) => (
                                         <option key={index} value={status}>{status}</option>
