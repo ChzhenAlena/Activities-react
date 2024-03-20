@@ -1,112 +1,93 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-
 import { useNavigate } from "react-router-dom";
 import useLogout from './useLogout';
-
+import './UserPage.css'; // Подключаем файл стилей
 
 const UsersPage = () => {
-
     const [activities, setActivities] = useState([]);
     const statuses = ['new', 'inProgress', 'done'];
 
     const logout = useLogout();
     const navigate = useNavigate();
 
-
-    const tableStyle = {
-        border: '1px solid #ddd',
-        borderCollapse: 'collapse',
-        width: '100%',
-    };
-    const cellStyle = {
-        border: '1px solid #ddd',
-        padding: '12px',
-        textAlign: 'left',
-    };
-    const headerCellStyle = {
-        ...cellStyle,
-        backgroundColor: '#f2f2f2',
-        color: '#333',
-        fontWeight: 'bold',
-    };
-
-
-
-    const [ID, setID] = useState({
-        ID: '',
-    })
-    const [status, setStatus] = useState({
-        status: '',
-    })
+    const [ID, setID] = useState({ ID: '' });
+    const [statusesByActivity, setStatusesByActivity] = useState({});
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('jwtToken');
-                const headers = {
-                    'Authorization': `${token}`
-                };
-                const url = localStorage.getItem("url") + '/users';
-                const response = await axios.get(url, {headers: headers});
-                setActivities(response.data);
-            } catch (error) {
-                console.error('Error fetching data', error);
-            }
-        };
         fetchData();
     }, []);
 
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const headers = {
+                'Authorization': `${token}`
+            };
+            const url = localStorage.getItem("url") + '/users';
+            const response = await axios.get(url, {headers: headers});
+            const sortedData = response.data.sort((a, b) => a.id - b.id);
+            setActivities(sortedData);
+            // Инициализируем состояние статусов для каждой активности
+            const initialStatuses = {};
+            sortedData.forEach(activity => {
+                initialStatuses[activity.id] = '';
+            });
+            setStatusesByActivity(initialStatuses);
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
+    };
+
     const handleSelectChange = (event) => {
         setID({...ID, [event.target.name]: event.target.value})
-    }
+    };
+
     const handleSubmit = (event) => {
         event.preventDefault();
         const token = localStorage.getItem('jwtToken');
         const headers = {
             'Authorization': `${token}`
         };
-
-        console.log('selectedOption')
-
         const url = localStorage.getItem("url") + '/users';
         axios.post(url, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                fetchData();
             })
             .catch(err => console.log(err))
-    }
-    const handleSelectChange2 = (event) => {
+    };
 
-        setStatus({...status, [event.target.name]: event.target.value});
+    const handleSelectChange2 = (event, activityId) => {
+        const updatedStatuses = { ...statusesByActivity };
+        updatedStatuses[activityId] = event.target.value;
+        setStatusesByActivity(updatedStatuses);
+    };
 
-    }
-    const handleSubmit2 = (event) => {
+    const handleSubmit2 = (event, activityId) => {
         event.preventDefault();
         const token = localStorage.getItem('jwtToken');
         const headers = {
             'Authorization': `${token}`
         };
-
-        const path =  localStorage.getItem("url") + '/users/'+ event.currentTarget.id;
-        console.log(path);
-        axios.post(path, status, { headers: headers })
+        const path =  localStorage.getItem("url") + '/users/'+ activityId;
+        axios.post(path, { status: statusesByActivity[activityId] }, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                fetchData();
+                // Не нужно сбрасывать значение status
             })
             .catch(err => console.log(err))
-        console.log('Submitted');
-    }
+    };
 
     const handleBackButtonClick = () => {
-        navigate("/menu"); // Redirect to the WelcomePage
+        navigate("/menu");
     };
 
     return (
         <div>
             <h1>Your Activities</h1>
             <form onSubmit={handleSubmit}>
-
                 <label>Select the current activity:
                     <select id="ID" name="ID" onChange={handleSelectChange}>
                         {activities.map(activity => (
@@ -117,24 +98,27 @@ const UsersPage = () => {
                 <button type="submit">Submit</button>
             </form>
             <br/>
-            <table style={tableStyle}>
+            <table className="custom-table">
                 <thead>
                 <tr>
-                    <th style={headerCellStyle}>Name</th>
-                    <th style={headerCellStyle}>Priority</th>
-                    <th style={headerCellStyle}>Status</th>
-                    <th style={headerCellStyle}>Change status</th>
+                    <th>#</th>
+                    <th>Name</th>
+                    <th>Priority</th>
+                    <th>Status</th>
+                    <th>Change status</th>
                 </tr>
                 </thead>
                 <tbody>
-                {activities.map((activity) => (
+                {activities.map((activity, index) => (
                     <tr key={activity.id}>
-                        <td style={cellStyle}>{activity.name}</td>
-                        <td style={cellStyle}>{activity.priority}</td>
-                        <td style={cellStyle}>{activity.status}</td>
-                        <td style={cellStyle}>
-                            <form id={activity.id} onSubmit={handleSubmit2}>
-                                <select id="status" name="status" onChange={handleSelectChange2}>
+                        <td>{index + 1}</td>
+                        <td>{activity.name}</td>
+                        <td>{activity.priority}</td>
+                        <td>{activity.status}</td>
+                        <td>
+                            <form onSubmit={(event) => handleSubmit2(event, activity.id)}>
+                                <select id="status" name="status" onChange={(event) => handleSelectChange2(event, activity.id)} value={statusesByActivity[activity.id]}>
+                                    <option value="" disabled hidden>Choose the status</option>
                                     {statuses.map((status, index) => (
                                         <option key={index} value={status}>{status}</option>
                                     ))}

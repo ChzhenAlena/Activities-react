@@ -1,0 +1,38 @@
+.custom-table {
+    border: 1px solid #ddd;
+    border-collapse: collapse;
+    width: 100%;
+    background-color: #FFF8DC;
+}
+
+.custom-table th,
+.custom-table td {
+    border: 1px solid #808000;
+    padding: 12px;
+    text-align: left;
+}
+
+.custom-table th {
+    background-color: #DAA520;
+    color: #333;
+    font-weight: bold;
+}
+
+.logout-btn {
+    margin-top: 20px;
+    margin-right: 10px;
+    padding: 10px 20px;
+    background-color: #ffc107;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.logout-btn:hover {
+    background-color: #ffc107;
+}
+.table-container {
+    max-height: 400px; /* Например, высота, которую вы хотите фиксировать */
+    overflow-y: auto; /* Разрешаем прокрутку по вертикали */
+}
