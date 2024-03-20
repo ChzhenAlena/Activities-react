@@ -6,9 +6,10 @@ import { useNavigate } from 'react-router-dom';
 const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
     const [mode, setMode] = useState('');
-    const [people, setPeople] = useState('');
+    const [people, setPeople] = useState([]);
     const logout = useLogout();
     const navigate = useNavigate();
+
 
     const tableStyle = {
         border: '1px solid black',
@@ -19,8 +20,8 @@ const ActivitiesPage = () => {
         padding: '8px',
     };
     const containerStyle = {
-        maxHeight: '400px', // Примерная высота контейнера для прокрутки
-        overflowY: 'auto', // Включение вертикальной прокрутки по необходимости
+        maxHeight: '400px',
+        overflowY: 'auto',
     };
     const [post, setPost] = useState({
         name: '',
@@ -30,6 +31,7 @@ const ActivitiesPage = () => {
     const [ID, setID] = useState({
         ID: '',
     });
+
     const fetchData = async () => {
         try {
             const token = localStorage.getItem('jwtToken');
@@ -65,13 +67,14 @@ const ActivitiesPage = () => {
             .post(url, post, { headers: headers })
             .then(function (response) {
                 console.log(response);
-                console.log('Successfully created ');
+                console.log('Successfully created');
                 console.log(response.data.id);
                 localStorage.setItem('jwtToken', response.data.id);
                 fetchData();
             })
             .catch((err) => console.log(err));
     }
+
     const handleBackButtonClick = () => {
         navigate('/menu');
     };
@@ -79,6 +82,7 @@ const ActivitiesPage = () => {
     const handleSelectChange2 = (event) => {
         setID({ ...ID, [event.target.name]: event.target.value });
     };
+
     const handleSubmit2 = (event) => {
         event.preventDefault();
         const token = localStorage.getItem('jwtToken');
@@ -86,24 +90,24 @@ const ActivitiesPage = () => {
             Authorization: `${token}`,
         };
         const path =
-            localStorage.getItem('url') + '/activities/' + +event.currentTarget.id;
+            localStorage.getItem('url') + '/activities/' + event.currentTarget.id;
         axios
             .post(path, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
                 const updatedActivities = activities.map(activity => {
                     if (activity.id === response.data.id) {
-                        // Update the person associated with the activity
                         return { ...activity, personName: response.data.personName, personSurname: response.data.personSurname };
                     } else {
                         return activity;
                     }
                 });
-                setActivities(updatedActivities); // Update the activities state
-                fetchData();
+                setActivities(updatedActivities);
+                fetchData(); // Обновление данных после изменения
             })
             .catch((err) => console.log(err));
     };
+
     const handleDelete = (event) => {
         event.preventDefault();
         const token = localStorage.getItem('jwtToken');
@@ -117,8 +121,8 @@ const ActivitiesPage = () => {
             .then(function (response) {
                 console.log(response);
                 const updatedActivities = activities.filter(activity => activity.id !== response.data.id);
-                setActivities(updatedActivities); // Update the activities state
-                fetchData();
+                setActivities(updatedActivities);
+                fetchData(); // Обновление данных после удаления
             })
             .catch((err) => console.log(err));
     };
@@ -173,8 +177,9 @@ const ActivitiesPage = () => {
                                 <td style={cellStyle}>
                                     <form id={activity.id} onSubmit={handleSubmit2}>
                                         <select name="ID" onChange={handleSelectChange2}>
-                                            {people.map((person, index) => (
-                                                <option key={index} value={person.id}>
+                                            <option value="">Choose the user</option>
+                                            {people.map((person) => (
+                                                <option key={person.id} value={person.id}>
                                                     {person.name}
                                                 </option>
                                             ))}
