@@ -91,6 +91,15 @@ const ActivitiesPage = () => {
             .post(path, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                const updatedActivities = activities.map(activity => {
+                    if (activity.id === response.data.id) {
+                        // Update the person associated with the activity
+                        return { ...activity, personName: response.data.personName, personSurname: response.data.personSurname };
+                    } else {
+                        return activity;
+                    }
+                });
+                setActivities(updatedActivities); // Update the activities state
                 fetchData();
             })
             .catch((err) => console.log(err));
@@ -107,6 +116,8 @@ const ActivitiesPage = () => {
             .delete(path, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                const updatedActivities = activities.filter(activity => activity.id !== response.data.id);
+                setActivities(updatedActivities); // Update the activities state
                 fetchData();
             })
             .catch((err) => console.log(err));
