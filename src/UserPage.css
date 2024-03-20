@@ -54,15 +54,15 @@
 }
 
 .create-activity-form {
-    margin-bottom: 20px;
+    margin-bottom: 1px;
 }
 
 .create-activity-form h2 {
-    margin-bottom: 10px;
+    margin-bottom: 1px;
 }
 
 .create-activity-form .form-row {
-    margin-bottom: 10px;
+    margin-bottom: 5px;
 }
 
 .create-activity-form label {
@@ -72,9 +72,9 @@
 
 .create-activity-form input[type="text"] {
     width: 50%;
-    padding: 8px;
+    padding: 7.5px;
     border: 1px solid #ccc;
-    border-radius: 4px;
+    border-radius: 2px;
     box-sizing: border-box;
 }
 

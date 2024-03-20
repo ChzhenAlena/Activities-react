@@ -155,6 +155,9 @@ const ActivitiesPage = () => {
                 <table className="custom-table">
                     <thead>
                     <tr>
+                        {mode === 'admin' && (
+                            <th>#</th>
+                        )}
                         <th>Name</th>
                         <th>Priority</th>
                         <th>Status</th>
@@ -166,6 +169,9 @@ const ActivitiesPage = () => {
                     <tbody>
                     {activities.map((activity, index) => (
                         <tr key={activity.id}>
+                            {mode === 'admin' && (
+                                <td>{index + 1}</td>
+                            )}
                             <td>{activity.activityName}</td>
                             <td>{activity.priority}</td>
                             <td>{activity.status}</td>
@@ -216,6 +222,7 @@ const ActivitiesPage = () => {
                     <table className="custom-table">
                         <thead>
                         <tr>
+                            <th>#</th>
                             <th>Name</th>
                             <th>Priority</th>
                             <th>Status</th>
@@ -223,8 +230,9 @@ const ActivitiesPage = () => {
                         </tr>
                         </thead>
                         <tbody>
-                        {activities.map((activity) => (
+                        {activities.map((activity, index) => (
                             <tr key={activity.id}>
+                                <td>{index + 1}</td>
                                 <td>{activity.activityName}</td>
                                 <td>{activity.priority}</td>
                                 <td>{activity.status}</td>
