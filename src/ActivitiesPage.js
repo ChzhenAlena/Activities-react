@@ -30,24 +30,23 @@ const ActivitiesPage = () => {
     const [ID, setID] = useState({
         ID: '',
     });
+    const fetchData = async () => {
+        try {
+            const token = localStorage.getItem('jwtToken');
+            const headers = {
+                Authorization: `${token}`,
+            };
+            const url = localStorage.getItem('url') + '/activities';
+            const response = await axios.get(url, { headers: headers });
+            setActivities(response.data.activities);
+            setMode(response.data.mode);
+            setPeople(response.data.people);
+        } catch (error) {
+            console.error('Error fetching data', error);
+        }
+    };
 
     useEffect(() => {
-        const fetchData = async () => {
-            try {
-                const token = localStorage.getItem('jwtToken');
-                const headers = {
-                    Authorization: `${token}`,
-                };
-                const url = localStorage.getItem('url') + '/activities';
-                const response = await axios.get(url, { headers: headers });
-                setActivities(response.data.activities);
-                setMode(response.data.mode);
-                setPeople(response.data.people);
-            } catch (error) {
-                console.error('Error fetching data', error);
-            }
-        };
-
         fetchData();
     }, []);
 
@@ -69,6 +68,7 @@ const ActivitiesPage = () => {
                 console.log('Successfully created ');
                 console.log(response.data.id);
                 localStorage.setItem('jwtToken', response.data.id);
+                fetchData();
             })
             .catch((err) => console.log(err));
     }
@@ -91,6 +91,7 @@ const ActivitiesPage = () => {
             .post(path, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                fetchData();
             })
             .catch((err) => console.log(err));
     };
@@ -106,6 +107,7 @@ const ActivitiesPage = () => {
             .delete(path, { headers: headers })
             .then(function (response) {
                 console.log(response);
+                fetchData();
             })
             .catch((err) => console.log(err));
     };
