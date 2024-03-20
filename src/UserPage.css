@@ -32,3 +32,7 @@
 .logout-btn:hover {
     background-color: #ffc107;
 }
+.table-container {
+    max-height: 400px; /* Например, высота, которую вы хотите фиксировать */
+    overflow-y: auto; /* Разрешаем прокрутку по вертикали */
+}
