@@ -7,7 +7,6 @@ const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
     const [mode, setMode] = useState('');
     const [people, setPeople] = useState('');
-    const [shouldUpdate, setShouldUpdate] = useState(false); // Флаг для обновления данных
     const logout = useLogout();
     const navigate = useNavigate();
 
@@ -32,17 +31,6 @@ const ActivitiesPage = () => {
         ID: '',
     });
 
-    const [isUserMenuOpen, setIsUserMenuOpen] = useState(false); // Состояние для отслеживания открытия меню выбора пользователя
-    const [selectedUser, setSelectedUser] = useState(null); // Состояние для хранения выбранного пользователя
-
-    const toggleUserMenu = () => {
-        setIsUserMenuOpen(!isUserMenuOpen);
-    };
-    const handleUserSelect = (userId) => {
-        setSelectedUser(userId);
-        toggleUserMenu(); // Закрываем меню выбора пользователя после выбора
-    };
-
     useEffect(() => {
         const fetchData = async () => {
             try {
@@ -61,7 +49,7 @@ const ActivitiesPage = () => {
         };
 
         fetchData();
-    }, [shouldUpdate]); // Добавляем shouldUpdate в зависимости
+    }, []);
 
     const handleInput = (event) => {
         setPost({ ...post, [event.target.name]: event.target.value });
@@ -98,15 +86,11 @@ const ActivitiesPage = () => {
             Authorization: `${token}`,
         };
         const path =
-            localStorage.getItem('url') + '/activities/' + event.currentTarget.id;
-        const data = {
-            ID: selectedUser // Используем выбранного пользователя
-        };
+            localStorage.getItem('url') + '/activities/' + +event.currentTarget.id;
         axios
-            .post(path, data, { headers: headers })
+            .post(path, ID, { headers: headers })
             .then(function (response) {
                 console.log(response);
-                setShouldUpdate(true); // Устанавливаем флаг для обновления данных
             })
             .catch((err) => console.log(err));
     };
@@ -172,7 +156,6 @@ const ActivitiesPage = () => {
                             <td style={cellStyle}>
                                 {activity.personName} {activity.personSurname}
                             </td>
-
                             {mode === 'admin' && (
                                 <td style={cellStyle}>
                                     <form id={activity.id} onSubmit={handleSubmit2}>
@@ -207,6 +190,35 @@ const ActivitiesPage = () => {
             </button>
         </div>
     );
+    if (mode === 'user') {
+        return (
+            <div>
+                <h1>Activities</h1>
+                <table style={tableStyle}>
+                    <thead>
+                    <tr>
+                        <th style={cellStyle}>Name</th>
+                        <th style={cellStyle}>Priority</th>
+                        <th style={cellStyle}>Status</th>
+                        <th style={cellStyle}>Person</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {activities.map((activity) => (
+                        <tr key={activity.id}>
+                            <td style={cellStyle}>{activity.activityName}</td>
+                            <td style={cellStyle}>{activity.priority}</td>
+                            <td style={cellStyle}>{activity.status}</td>
+                            <td style={cellStyle}>{activity.personName} {activity.personSurname}</td>
+                        </tr>
+                    ))}
+                    </tbody>
+                </table>
+                <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
+                <button className="logout-btn" type="button" onClick={logout}>Logout</button>
+            </div>
+        );
+    }
 };
 
 export default ActivitiesPage;
