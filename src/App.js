@@ -6,7 +6,7 @@ import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import UserPage from "./UserPage";
 import ActivitiesPage from "./ActivitiesPage";
 function App() {
-    localStorage.setItem("url", "http://35.209.156.155:8085/activities");
+    localStorage.setItem("url", "http://35.209.156.155:8085/activities/frontController");
     return (
         <Router>
             <Routes>
