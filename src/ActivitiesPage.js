@@ -158,6 +158,7 @@ const ActivitiesPage = () => {
                         {mode === 'admin' && (
                             <th>#</th>
                         )}
+                        <th>#</th>
                         <th>Name</th>
                         <th>Priority</th>
                         <th>Status</th>
@@ -172,6 +173,7 @@ const ActivitiesPage = () => {
                             {mode === 'admin' && (
                                 <td>{index + 1}</td>
                             )}
+                            <td>{index + 1}</td>
                             <td>{activity.activityName}</td>
                             <td>{activity.priority}</td>
                             <td>{activity.status}</td>
@@ -214,7 +216,7 @@ const ActivitiesPage = () => {
         </div>
     );
 
-    if (mode === 'user') {
+    /*if (mode === 'user') {
         return (
             <div>
                 <h1>Activities</h1>
@@ -248,7 +250,7 @@ const ActivitiesPage = () => {
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
         );
-    }
+    }*/
 };
 
 export default ActivitiesPage;
