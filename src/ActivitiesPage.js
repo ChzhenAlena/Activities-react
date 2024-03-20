@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import useLogout from './useLogout';
 import { useNavigate } from 'react-router-dom';
+import './UserPage.css';
 
 const ActivitiesPage = () => {
     const [activities, setActivities] = useState([]);
@@ -150,31 +151,29 @@ const ActivitiesPage = () => {
                 </form>
             )}
             <h1>Activities</h1>
-            <div style={containerStyle}>
-                <table style={tableStyle}>
+            <div className="table-container">
+                <table className="custom-table">
                     <thead>
                     <tr>
-                        <th style={cellStyle}>#</th>
-                        <th style={cellStyle}>Name</th>
-                        <th style={cellStyle}>Priority</th>
-                        <th style={cellStyle}>Status</th>
-                        <th style={cellStyle}>Person</th>
-                        {mode === 'admin' && <th style={cellStyle}>Change person</th>}
-                        {mode === 'admin' && <th style={cellStyle}></th>}
+                        <th>Name</th>
+                        <th>Priority</th>
+                        <th>Status</th>
+                        <th>Person</th>
+                        {mode === 'admin' && <th>Change person</th>}
+                        {mode === 'admin' && <th></th>}
                     </tr>
                     </thead>
                     <tbody>
                     {activities.map((activity, index) => (
                         <tr key={activity.id}>
-                            <td style={cellStyle}>{index + 1}</td>
-                            <td style={cellStyle}>{activity.activityName}</td>
-                            <td style={cellStyle}>{activity.priority}</td>
-                            <td style={cellStyle}>{activity.status}</td>
-                            <td style={cellStyle}>
+                            <td>{activity.activityName}</td>
+                            <td>{activity.priority}</td>
+                            <td>{activity.status}</td>
+                            <td>
                                 {activity.personName} {activity.personSurname}
                             </td>
                             {mode === 'admin' && (
-                                <td style={cellStyle}>
+                                <td>
                                     <form id={activity.id} onSubmit={handleSubmit2}>
                                         <select name="ID" onChange={handleSelectChange2}>
                                             <option value="">Choose the user</option>
@@ -189,7 +188,7 @@ const ActivitiesPage = () => {
                                 </td>
                             )}
                             {mode === 'admin' && (
-                                <td style={cellStyle}>
+                                <td>
                                     <form id={activity.id} onSubmit={handleDelete}>
                                         <button type="submit">Delete</button>
                                     </form>
@@ -208,30 +207,35 @@ const ActivitiesPage = () => {
             </button>
         </div>
     );
+
     if (mode === 'user') {
         return (
             <div>
                 <h1>Activities</h1>
-                <table style={tableStyle}>
-                    <thead>
-                    <tr>
-                        <th style={cellStyle}>Name</th>
-                        <th style={cellStyle}>Priority</th>
-                        <th style={cellStyle}>Status</th>
-                        <th style={cellStyle}>Person</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    {activities.map((activity) => (
-                        <tr key={activity.id}>
-                            <td style={cellStyle}>{activity.activityName}</td>
-                            <td style={cellStyle}>{activity.priority}</td>
-                            <td style={cellStyle}>{activity.status}</td>
-                            <td style={cellStyle}>{activity.personName} {activity.personSurname}</td>
+                <div className="table-container">
+                    <table className="custom-table">
+                        <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Priority</th>
+                            <th>Status</th>
+                            <th>Person</th>
                         </tr>
-                    ))}
-                    </tbody>
-                </table>
+                        </thead>
+                        <tbody>
+                        {activities.map((activity) => (
+                            <tr key={activity.id}>
+                                <td>{activity.activityName}</td>
+                                <td>{activity.priority}</td>
+                                <td>{activity.status}</td>
+                                <td>
+                                    {activity.personName} {activity.personSurname}
+                                </td>
+                            </tr>
+                        ))}
+                        </tbody>
+                    </table>
+                </div>
                 <button className="logout-btn" type="button" onClick={handleBackButtonClick}>Back</button>
                 <button className="logout-btn" type="button" onClick={logout}>Logout</button>
             </div>
