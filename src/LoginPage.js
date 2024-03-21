@@ -33,7 +33,7 @@ function LoginPage({ onLogin }) {
 
     return (
         <div className="container">
-            <h2>Welcome back to our website</h2>
+            <h2>Welcome back to our website!</h2>
             <p>To continue, please login:</p>
             <form>
                 <div className="input-container">
