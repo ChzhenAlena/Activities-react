@@ -24,8 +24,8 @@ function LoginPage({ onLogin }) {
             .then(function (response) {
                 console.log(response);
                 console.log("Successfully Logged in ");
-                console.log(response.data.id);
-                localStorage.setItem('jwtToken', response.data.ID);
+                console.log(response.data.jwt);
+                localStorage.setItem('jwtToken', response.data.jwt);
                 navigate('/menu'); // используем это вместо history.push
             })
             .catch(err => console.log(err));
