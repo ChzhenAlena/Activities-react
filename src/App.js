@@ -7,6 +7,7 @@ import UserPage from "./UserPage";
 import ActivitiesPage from "./ActivitiesPage";
 function App() {
     localStorage.setItem("url", "http://35.209.156.155:8085/activities/frontController");
+    //localStorage.setItem("url", "http://localhost:8080/activities/frontController");
     return (
         <Router>
             <Routes>
